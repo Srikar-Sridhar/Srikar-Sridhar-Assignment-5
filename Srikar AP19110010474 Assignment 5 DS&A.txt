@@ -1,0 +1,306 @@
+Q.1) 
+
+#include<stdio.h>
+  int main()
+  {
+  int  arra[100],i,n,sri,chintu,l,v,flag=0;
+  printf("please enter the needed no of elements in  an array\n");
+  scanf("%d",&n);
+  printf("please enter %d value in increasing order order\n",n);
+  for(i=0;i<n;i++)
+  scanf("%d",&arra[i]);
+  printf("Input  the value to be search : ");
+  scanf("%d",&sri);
+  /* I OBTAINED THIS BY UTILIZING BINARY SEARCH IN A CERTAIN */
+  chintu=0;l=n-1;
+  while(chintu<=l)
+  {
+  v=(chintu+l)/2;
+  if(sri==arra[v])
+  
+  /* Here I used break to disconnect fallacy conditions*/
+  
+  
+  {
+  flag=1;
+  break;
+  }
+  else  if(sri<arra[v])
+  l=v-1;
+  else
+  chintu=v+1;
+  }
+  if(flag==0)
+  printf("%d  value not found\n",sri);
+  else
+  printf("%d value  found at %d position\n",sri,v);
+  return 0;
+  }
+Q.2)
+#include<stdio.h>
+  
+int main()
+
+/in this case c is assigned with size of 10 for example for simple solving/
+
+{
+    
+    
+    int c[10],i,s,a;
+    printf("please enter how many elements you wanted to add");
+    scanf("%d",&a);
+     
+    printf("please enter array elements:n");
+    for(i=0;i<a;++i)
+        scanf("%d",&c[i]);
+     
+    printf("nEnter element to search:");
+    scanf("%d",&s);
+     
+    for(i=0;i<a;++i)
+        if(c[i]==s)
+            break;
+     
+    if(i<a)
+        printf(" hurray be happy the Element found at index %d",i);
+    else
+        printf("opps sorry the Element not found");
+  
+  
+  /* here break case is applied to discontinue the false statement and also 2 cases are there 
+    i.e for finding and not finding elements by using if and for conditions*/
+    return 0;
+}
+Q.3)
+
+ #include <stdio.h>
+#include <stdlib.h>
+ 
+// Now we are defineing the types of Traversals we know.....
+
+enum Traversal {PREORDER, INORDER, POSTORDER
+    
+};
+ 
+typedef enum Traversal Traversal;
+typedef struct Node Node;
+ 
+// Here we are defining NODES OF A TREE
+
+struct Node {
+    int value;
+    
+    Node* left, *right;
+
+    
+};
+ 
+ 
+Node* init_tree(int data) 
+
+{
+    
+    // This is a root node
+   
+   /* By using malloc which is a library function*/
+   
+    Node* root = (Node*) malloc (sizeof(Node));
+    root->left = root->right = NULL;
+    root->value = data;
+    return root;
+}
+ 
+Node* create_node(int data)
+
+{
+    /* Now we create a new node.....*/
+    Node* node = (Node*) malloc (sizeof(Node));
+    node->value = data;
+    node->left = node->right = NULL;
+    return node;
+}
+void free_tree(Node* root) {
+    
+    
+    Node* temp = root;
+    if (!temp)
+        return;
+    free_tree(temp->left);
+    free_tree(temp->right);
+    if (!temp->left && !temp->right) {
+        free(temp);
+        return;
+    }
+}
+ 
+ 
+void print_tree(Traversal traversal, Node* root) {
+  
+    /* here we used various types of traversals*/
+  
+    if (!root)
+        return;
+    switch(traversal) {
+        case (PREORDER):
+         
+            /* we are doing   a Preorder Traversal*/
+          
+            printf("%d -> ", root->value);
+            print_tree(traversal, root->left);
+            print_tree(traversal, root->right);
+            break;
+ 
+        case (INORDER):
+           
+            // we had done an Inorder Traversal.
+           
+            print_tree(traversal, root->left);
+            printf("%d -> ", root->value);
+            print_tree(traversal, root->right);
+            break;
+ 
+        case (POSTORDER):
+           
+            // We had done a postorder Traversal...
+            
+            print_tree(traversal, root->left);
+            print_tree(traversal, root->right);
+            printf("%d -> ", root->value);
+            break;
+    }
+}
+ 
+int main() {
+    // Program to demonstrate finding the height of a Binary Tree
+ 
+    // Create the root node having a value of 10
+    Node* root = init_tree(10);
+     
+    // Insert nodes onto the tree
+    root->left = create_node(20);
+    root->right = create_node(30);
+ 
+    root->left->left = create_node(40);
+    root->left->right = create_node(50);
+ 
+    root->right->left = create_node(60);
+    root->right->right = create_node(70);
+ 
+    printf("----Preorder Traversal:----\n");
+    print_tree(PREORDER, root);
+    printf("\n\n");
+ 
+    printf("----Inorder Traversal:----\n");
+    print_tree(INORDER, root);
+    printf("\n\n");
+ 
+    printf("----Postorder Traversal:----\n");
+    print_tree(POSTORDER, root);
+    printf("\n\n");
+ 
+    // The tree is finally freed in this final operation
+    free_tree(root);
+    return 0;
+}
+Q.4)
+
+ #include<stdio.h>
+#include<stdlib.h>
+
+struct node
+{
+
+int data;
+struct node* left;
+struct node* right;
+
+    
+};
+
+int max(int inorder[], int strt, int end);
+
+struct node* newNode(int data);
+
+struct node* buildTree (int inorder[], int start, int end)
+
+{
+
+if (start > end)
+
+return NULL;
+
+int i = max (inorder, start, end);
+struct node *root = newNode(inorder[i]);
+
+if (start == end)
+return root;
+
+root->left = buildTree (inorder, start, i-1);
+root->right = buildTree (inorder, i+1, end);
+return root;
+}
+
+int max (int arr[], int strt, int end)
+{
+
+int i, max = arr[strt], maxind = strt;
+for(i = strt+1; i <= end; i++)
+
+{
+if(arr[i] > max)
+
+{
+max = arr[i];
+maxind = i;
+
+    
+}
+
+    
+}
+return maxind;
+}
+
+struct node* newNode (int data)
+
+{
+
+struct node* node = (struct node*)malloc(sizeof(struct node));
+node->data = data;
+node->left = NULL;
+node->right = NULL;
+return node;
+
+    
+}
+
+void printInorder (struct node* node)
+
+{
+if (node == NULL)
+return;
+
+printInorder (node->left);
+
+printf("%d ", node->data);
+
+printInorder (node->right);
+}
+
+int main()
+
+{
+
+
+int inorder[] = {5, 10, 50, 40, 20};
+int len = sizeof(inorder)/sizeof(inorder[0]);
+struct node *root = buildTree(inorder, 0, len - 1);
+
+
+printf("\n Inorder traversal of the constructed tree is \n");
+printInorder(root);
+
+return 0;
+
+    
+}
